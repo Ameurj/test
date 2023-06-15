@@ -19,36 +19,16 @@ function() {
   // Return the captured search term(s)
   return searchTerms.join(', ');
 }
+var testURL = 'https://www.example.com/search?SearchTerm=test';
+var testRequest = new XMLHttpRequest();
+testRequest.open('GET', testURL);
+testRequest.send();
 
-
-<script>
-  function makeAjaxRequest(requestName) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        var responseText = xhr.responseText;
-        console.log('Response Payload:', responseText);
-        // Perform further processing with the response payload
-
-        // Push data layer event indicating successful request
-        dataLayer.push({
-          'event': 'test_success',
-          'requestName': requestName
-        });
-      }
-    };
-
-    // Set up the AJAX request
-    xhr.open('GET', requestName, true);
-    xhr.send();
-  }
-
-  // Filter the requests based on their names
-  var requestNamePattern = 'https://www.shophighlinewarren.com/search?SearchTerm=';
+setTimeout(function() {
   var requests = performance.getEntriesByType('resource');
   requests.forEach(function(request) {
-    if (request.name.includes(requestNamePattern)) {
-      makeAjaxRequest(request.name);
+    if (request.name.includes(testURL)) {
+      console.log('Matching Request:', request.name);
     }
   });
-</script>
+}, 1000);
