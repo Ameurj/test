@@ -16,19 +16,21 @@ function() {
     }
   });
 
-  // Return the captured search term(s)
-  return searchTerms.join(', ');
-}
-var testURL = 'https://www.example.com/search?SearchTerm=test';
+
+
+
+
+
+var testURL = 'https://www.shophighlinewarren.com/search?SearchTerm=test';
 var testRequest = new XMLHttpRequest();
 testRequest.open('GET', testURL);
 testRequest.send();
 
 setTimeout(function() {
-  var requests = performance.getEntriesByType('resource');
-  requests.forEach(function(request) {
-    if (request.name.includes(testURL)) {
-      console.log('Matching Request:', request.name);
+  var entries = performance.getEntries();
+  entries.forEach(function(entry) {
+    if (entry.name.includes(testURL) && entry.initiatorType === 'document' && entry.transferSize === 0) {
+      console.log('Matching Request:', entry.name);
     }
   });
 }, 1000);
