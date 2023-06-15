@@ -21,32 +21,27 @@ function() {
 }
 
 
-
-
 <script>
-  function captureReferrerLink() {
+  function makeAjaxRequest() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        var referrerLink = xhr.getResponseHeader('Referer');
-        console.log('Referrer Link:', referrerLink);
-        // Extract the search term from the referrer link
-        var searchQuery = extractSearchTermFromReferrerLink(referrerLink);
-        console.log('Search term:', searchQuery);
-        // Perform any necessary actions with the captured search term
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          var responseText = xhr.responseText;
+          console.log('Response Payload:', responseText);
+          // Perform further processing with the response payload
+        } else if (xhr.status === 302) {
+          var redirectedUrl = xhr.getResponseHeader('Location');
+          console.log('Redirected URL:', redirectedUrl);
+          // Perform further processing with the redirected URL
+        }
       }
     };
 
-    // Make the request to the redirected page
-    xhr.open('GET', 'URL_OF_REDIRECTED_PAGE', true);
+    // Set up the AJAX request
+    xhr.open('GET', 'URL_OF_REQUEST', true);
     xhr.send();
   }
 
-  // Helper function to extract the search term from the referrer link
-  function extractSearchTermFromReferrerLink(referrerLink) {
-    // Implement your logic to extract the search term from the referrer link
-    // Return the extracted search term
-  }
-
-  captureReferrerLink();
+  makeAjaxRequest();
 </script>
