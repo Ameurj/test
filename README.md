@@ -7,6 +7,12 @@ function() {
     if (url.includes('/search?Searchterm=')) {
       var searchTerm = new URL(url).searchParams.get('Searchterm');
       searchTerms.push(searchTerm);
+      
+      // Push event to the data layer
+      dataLayer.push({
+        'event': 'website_search',
+        'searchTerm': searchTerm
+      });
     }
   });
 
