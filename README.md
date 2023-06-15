@@ -21,16 +21,18 @@ function() {
 }
 
 
-
 <script>
-  window.addEventListener('popstate', function() {
-    var searchTerm = new URL(window.location.href).searchParams.get('SearchTerm');
-    if (searchTerm) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'event': 'website_search',
-        'searchTerm': searchTerm
-      });
-    }
+  window.addEventListener('fetch', function(event) {
+    event.request.clone().text().then(function(text) {
+      var url = event.request.url;
+      if (url.includes('/search?SearchTerm=')) {
+        var searchTerm = new URL(url).searchParams.get('SearchTerm');
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'website_search',
+          'searchTerm': searchTerm
+        });
+      }
+    });
   });
 </script>
