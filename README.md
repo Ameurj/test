@@ -22,7 +22,6 @@ function() {
 
 
 
-
 <script>
   window.addEventListener('popstate', function() {
     var searchTerm = new URL(window.location.href).searchParams.get('SearchTerm');
