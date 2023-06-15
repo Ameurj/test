@@ -21,40 +21,20 @@ function() {
 }
 
 
-<script id="gtm-jq-ajax-listen" type="text/javascript">
-(function() {
-  'use strict';
 
-  function bindToAjaxSearch() {
-    // Add your AJAX search event binding code here
-    // ...
 
-    // Customize the attributes to include search-specific data
-    dataLayer.push({
-      'event': 'searchComplete',
-      'attributes': {
-        'searchQuery': opts.data, // Example: Capture the search query parameter
-        'response': (jqXhr.responseJSON || jqXhr.responseXML || jqXhr.responseText || '')
-        // Add other relevant attributes specific to the search
-      }
-    });
+
+
+
+<script>
+  function captureRedirectedURL() {
+    var a = document.createElement('a');
+    a.href = document.location.href;
+    var redirectedURL = a.href;
+    console.log('Redirected URL:', redirectedURL);
+    // Perform any necessary actions with the captured redirected URL
+    // You can extract the search term or pass it to the redirected page
   }
-
-  function init(n) {
-    // Ensure jQuery is available before anything
-    if (typeof jQuery !== 'undefined') {
-      // Define our $ shortcut locally
-      var $ = jQuery;
-      bindToAjaxSearch();
-    } else if (n < 20) {
-      n++;
-      setTimeout(function() {
-        init(n);
-      }, 500);
-    }
-  }
-
-  // Initialize the function
-  init(0);
-})();
+  
+  captureRedirectedURL();
 </script>
