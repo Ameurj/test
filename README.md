@@ -21,45 +21,34 @@ function() {
 }
 
 
-
-
 <script>
-  function makeAjaxRequest() {
+  function makeAjaxRequest(requestName) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          var responseText = xhr.responseText;
-          console.log('Response Payload:', responseText);
-          // Perform further processing with the response payload
+        var responseText = xhr.responseText;
+        console.log('Response Payload:', responseText);
+        // Perform further processing with the response payload
 
-          // Push data layer event indicating successful request
-          dataLayer.push({
-            'event': 'test_success',
-            'requestURL': xhr.responseURL
-          });
-        } else if (xhr.status === 302) {
-          var redirectedUrl = xhr.getResponseHeader('Location');
-          console.log('Redirected URL:', redirectedUrl);
-          // Perform further processing with the redirected URL
-
-          // Make another AJAX request to the redirected URL
-          makeAjaxRequest();
-        }
+        // Push data layer event indicating successful request
+        dataLayer.push({
+          'event': 'test_success',
+          'requestName': requestName
+        });
       }
     };
 
     // Set up the AJAX request
-    xhr.open('GET', 'URL_OF_REQUEST', true);
+    xhr.open('GET', requestName, true);
     xhr.send();
   }
 
-  // Filter the request based on the request URL containing the specific pattern
-  var requestURLPattern = 'https://www.shophighlinewarren.com/search?SearchTerm=';
+  // Filter the requests based on their names
+  var requestNamePattern = 'https://www.shophighlinewarren.com/search?SearchTerm=';
   var requests = performance.getEntriesByType('resource');
   requests.forEach(function(request) {
-    if (request.name.includes(requestURLPattern)) {
-      makeAjaxRequest();
+    if (request.name.includes(requestNamePattern)) {
+      makeAjaxRequest(request.name);
     }
   });
 </script>
