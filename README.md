@@ -23,18 +23,30 @@ function() {
 
 
 
-
-
-
 <script>
-  function captureRedirectedURL() {
-    var a = document.createElement('a');
-    a.href = document.location.href;
-    var redirectedURL = a.href;
-    console.log('Redirected URL:', redirectedURL);
-    // Perform any necessary actions with the captured redirected URL
-    // You can extract the search term or pass it to the redirected page
+  function captureReferrerLink() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var referrerLink = xhr.getResponseHeader('Referer');
+        console.log('Referrer Link:', referrerLink);
+        // Extract the search term from the referrer link
+        var searchQuery = extractSearchTermFromReferrerLink(referrerLink);
+        console.log('Search term:', searchQuery);
+        // Perform any necessary actions with the captured search term
+      }
+    };
+
+    // Make the request to the redirected page
+    xhr.open('GET', 'URL_OF_REDIRECTED_PAGE', true);
+    xhr.send();
   }
-  
-  captureRedirectedURL();
+
+  // Helper function to extract the search term from the referrer link
+  function extractSearchTermFromReferrerLink(referrerLink) {
+    // Implement your logic to extract the search term from the referrer link
+    // Return the extracted search term
+  }
+
+  captureReferrerLink();
 </script>
