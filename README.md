@@ -19,18 +19,17 @@ function() {
 
 
 
+var requestNamePattern = 'oilandlubricants';
+var requests = performance.getEntriesByType('resource');
+var matchingRequests = requests.filter(function(request) {
+  return request.name.includes(requestNamePattern);
+});
 
-
-var testURL = 'https://www.shophighlinewarren.com/search?SearchTerm=test';
-var testRequest = new XMLHttpRequest();
-testRequest.open('GET', testURL);
-testRequest.send();
-
-setTimeout(function() {
-  var entries = performance.getEntries();
-  entries.forEach(function(entry) {
-    if (entry.name.includes(testURL) && entry.initiatorType === 'document' && entry.transferSize === 0) {
-      console.log('Matching Request:', entry.name);
-    }
+if (matchingRequests.length > 0) {
+  console.log('Matching Requests:');
+  matchingRequests.forEach(function(request) {
+    console.log(request.name);
   });
-}, 1000);
+} else {
+  console.log('No matching requests found.');
+}
