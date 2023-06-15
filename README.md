@@ -17,10 +17,12 @@ function() {
   });
 
 
-var requestNamePattern = 'search?SearchTerm=';
+
+
+var requestNamePattern = /oilandlubricants/;
 var requests = performance.getEntriesByType('resource');
 requests.forEach(function(request) {
-  if (request.name.includes(requestNamePattern)) {
+  if (request.name.match(requestNamePattern)) {
     console.log('Matching Request:', request.name);
   }
 });
