@@ -21,6 +21,8 @@ function() {
 }
 
 
+
+
 <script>
   function makeAjaxRequest() {
     var xhr = new XMLHttpRequest();
@@ -30,10 +32,19 @@ function() {
           var responseText = xhr.responseText;
           console.log('Response Payload:', responseText);
           // Perform further processing with the response payload
+
+          // Push data layer event indicating successful request
+          dataLayer.push({
+            'event': 'test_success',
+            'requestURL': xhr.responseURL
+          });
         } else if (xhr.status === 302) {
           var redirectedUrl = xhr.getResponseHeader('Location');
           console.log('Redirected URL:', redirectedUrl);
           // Perform further processing with the redirected URL
+
+          // Make another AJAX request to the redirected URL
+          makeAjaxRequest();
         }
       }
     };
@@ -43,5 +54,12 @@ function() {
     xhr.send();
   }
 
-  makeAjaxRequest();
+  // Filter the request based on the request URL containing the specific pattern
+  var requestURLPattern = 'https://www.shophighlinewarren.com/search?SearchTerm=';
+  var requests = performance.getEntriesByType('resource');
+  requests.forEach(function(request) {
+    if (request.name.includes(requestURLPattern)) {
+      makeAjaxRequest();
+    }
+  });
 </script>
