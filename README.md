@@ -17,13 +17,10 @@ function() {
   });
 
 
-
 var requestNamePattern = 'search?SearchTerm=';
 var requests = performance.getEntriesByType('resource');
 requests.forEach(function(request) {
   if (request.name.includes(requestNamePattern)) {
-    var searchTerm = request.name.match(/search\?SearchTerm=(.*?)&search=/)[1];
     console.log('Matching Request:', request.name);
-    console.log('Search Term:', searchTerm);
   }
 });
