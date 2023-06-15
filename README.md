@@ -19,3 +19,23 @@ function() {
   // Return the captured search term(s)
   return searchTerms.join(', ');
 }
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('fetch', function(event) {
+    var url = event.request.url;
+    if (url.includes('/search?Searchterm=')) {
+      var searchTerm = new URL(url).searchParams.get('Searchterm');
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'website_search',
+        'searchTerm': searchTerm
+      });
+    }
+  });
+</script>
