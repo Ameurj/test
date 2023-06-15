@@ -23,14 +23,10 @@ function() {
 
 
 
-
-
-
 <script>
-  window.addEventListener('fetch', function(event) {
-    var url = event.request.url;
-    if (url.includes('/search?Searchterm=')) {
-      var searchTerm = new URL(url).searchParams.get('Searchterm');
+  window.addEventListener('popstate', function() {
+    var searchTerm = new URL(window.location.href).searchParams.get('SearchTerm');
+    if (searchTerm) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         'event': 'website_search',
