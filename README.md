@@ -20,19 +20,23 @@ function() {
   return searchTerms.join(', ');
 }
 
-
 <script>
   window.addEventListener('fetch', function(event) {
-    event.request.clone().text().then(function(text) {
-      var url = event.request.url;
-      if (url.includes('/search?SearchTerm=')) {
-        var searchTerm = new URL(url).searchParams.get('SearchTerm');
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          'event': 'website_search',
-          'searchTerm': searchTerm
-        });
-      }
-    });
+    var requestName = event.request.url;
+    var searchTerm = null;
+
+    if (requestName.includes('search?SearchTerm=')) {
+      var queryString = requestName.split('?')[1];
+      var params = new URLSearchParams(queryString);
+      searchTerm = params.get('SearchTerm');
+    }
+
+    if (searchTerm) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'website_search',
+        'searchTerm': searchTerm
+      });
+    }
   });
 </script>
