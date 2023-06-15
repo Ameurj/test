@@ -18,18 +18,12 @@ function() {
 
 
 
-
-var requestNamePattern = 'oilandlubricants';
+var requestNamePattern = 'search?SearchTerm=';
 var requests = performance.getEntriesByType('resource');
-var matchingRequests = requests.filter(function(request) {
-  return request.name.includes(requestNamePattern);
+requests.forEach(function(request) {
+  if (request.name.includes(requestNamePattern)) {
+    var searchTerm = request.name.match(/search\?SearchTerm=(.*?)&search=/)[1];
+    console.log('Matching Request:', request.name);
+    console.log('Search Term:', searchTerm);
+  }
 });
-
-if (matchingRequests.length > 0) {
-  console.log('Matching Requests:');
-  matchingRequests.forEach(function(request) {
-    console.log(request.name);
-  });
-} else {
-  console.log('No matching requests found.');
-}
